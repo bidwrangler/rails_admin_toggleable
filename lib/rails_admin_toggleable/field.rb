@@ -22,12 +22,14 @@ module RailsAdmin
             def g_js
               <<-END.strip_heredoc.gsub("\n", ' ').gsub(/ +/, ' ')
                 var $t = $(this);
+                $t.bind('click', function(e) { e.preventDefault(); });
                 $t.html("<i class='fa fa-spinner fa-spin'></i>");
                 $.ajax({
                   type: "POST",
                   url: $t.attr("href"),
                   data: {ajax:true},
                   success: function(r) {
+                    $t.unbind('click');
                     $t.attr("href", r.href);
                     $t.attr("class", r.class);
                     $t.text(r.text);
